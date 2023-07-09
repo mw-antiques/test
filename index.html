@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Dashboard</title>
+  <style>
+    body {
+      background-color: #000;
+      color: #0f0;
+      font-family: 'Courier New', monospace;
+      padding: 20px;
+    }
+
+    pre {
+      background-color: #000;
+      padding: 10px;
+      overflow: auto;
+      white-space: pre-wrap;
+      border-radius: 5px;
+      max-height: 400px;
+      border: 1px solid #0f0;
+    }
+
+    .header {
+      font-size: 24px;
+      margin-bottom: 20px;
+    }
+
+    .button {
+      background-color: #0f0;
+      color: #000;
+      border: none;
+      padding: 8px 16px;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      font-size: 16px;
+      margin-right: 10px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <h1 class="header">Request Logs</h1>
+  <pre id="console"></pre>
+  <div>
+    <button class="button" onclick="refreshLogs()">Refresh Logs</button>
+    <button class="button" onclick="clearLogs()">Clear Logs</button>
+  </div>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script>
+    // Function to fetch and display the log file contents
+    function fetchLogs() {
+      $.get('requests.txt', function(data) {
+        $('#console').html(data);
+        $('#console').scrollTop($('#console')[0].scrollHeight);
+      });
+    }
+
+    // Refresh logs button click handler
+    function refreshLogs() {
+      fetchLogs();
+    }
+
+    // Clear logs button click handler
+    function clearLogs() {
+      $.post('clear-logs.php', function(data) {
+        alert(data);
+        fetchLogs();
+      });
+    }
+
+    // Load logs on page load
+    $(document).ready(function() {
+      fetchLogs();
+    });
+  </script>
+</body>
+</html>
